@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import TableData from "../Api/TableData.json";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import {
+  AiOutlineArrowLeft,
+  AiOutlineArrowRight,
+  AiFillMinusCircle,
+} from "react-icons/ai";
 import { BsPlusCircleFill } from "react-icons/bs";
-import { AiFillMinusCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
 const Table = () => {
@@ -27,6 +30,56 @@ const Table = () => {
   const tableSubSubSubRow = "bg-blue-400 hover:bg-blue-500 duration-300";
   const iconButton =
     "py-4 px-6 flex items-center gap-2 cursor-pointer duration-300";
+
+  const renderRow = (row, level) => {
+    const {
+      account_name,
+      account_code,
+      children,
+      current,
+      previous,
+      isExpanded,
+    } = row;
+    const rowClass =
+      level === 1
+        ? tableRow
+        : level === 2
+        ? tableSubRow
+        : level === 3
+        ? tableSubSubRow
+        : tableSubSubSubRow;
+    console.log(row);
+    return (
+      <React.Fragment key={account_name}>
+        <tr className={rowClass}>
+          <td
+            className={`py-4 px-6 flex gap-2 items-center ${iconButton}`}
+            onClick={() => changeExpanded(row)}
+          >
+            {children &&
+              (row.isExpanded ? <AiFillMinusCircle /> : <BsPlusCircleFill />)}
+            <span className="font-medium">{account_name}</span>
+          </td>
+          <td className="py-4 px-6">{account_code}</td>
+          <td className="py-4 px-6">
+            {row.isExpanded || !children ? current : row.children_total_current}
+          </td>
+          <td className="py-4 px-6">
+            {row.isExpanded || !children
+              ? previous
+              : row.children_total_previous}
+          </td>
+        </tr>
+        {children &&
+          row.isExpanded &&
+          Object.keys(children).map((childId) => {
+            console.log(childId);
+            children[childId]["account_code"] = childId;
+            return renderRow(children[childId], level + 1);
+          })}
+      </React.Fragment>
+    );
+  };
 
   return (
     <div className={tableContainer}>
@@ -59,174 +112,12 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          {Object.keys(data).map((accNum) => {
-            const acc = data[accNum];
+          {Object.values(data).map((rowData, index) => {
+            
 
-            return (
-              <React.Fragment key={accNum}>
-                <tr className={tableRow}>
-                  <td
-                    className={`py-4 px-6 flex gap-2 items-center ${iconButton}`}
-                    onClick={() => changeExpanded(acc)}
-                  >
-                    {acc.children ? (
-                      acc.isExpanded ? (
-                        <AiFillMinusCircle />
-                      ) : (
-                        <BsPlusCircleFill />
-                      )
-                    ) : null}
-                    <span className="font-medium">{acc.account_name}</span>
-                    
-                  </td>
-                 
-                  <td className="py-4 px-6">{accNum}</td>
-                  
-                  <td className="py-4 px-6">
-                    {acc.isExpanded || !acc.children
-                      ? acc.current
-                      : acc.children_total_current}
-                  </td>
-                  <td className="py-4 px-6">
-                    {acc.isExpanded || !acc.children
-                      ? acc.previous
-                      : acc.children_total_previous}
-                  </td>
-                </tr>
-                {acc.children &&
-                  acc.isExpanded &&
-                  Object.keys(acc.children).map((childId) => {
-                    const childAcc = acc.children[childId];
-                    return (
-                      <React.Fragment key={childId}>
-                        <tr key={childId} className={tableSubRow}>
-                          <td
-                            className={`py-4 px-6 flex items-center gap-2 ${iconButton}`}
-                            onClick={() => changeExpanded(childAcc)}
-                          >
-                            {childAcc.children ? (
-                              childAcc.isExpanded ? (
-                                <AiFillMinusCircle />
-                              ) : (
-                                <BsPlusCircleFill />
-                              )
-                            ) : null}
-                            <span className="font-medium">
-                              {childAcc.account_name}
-                            </span>
-                          </td>
-                          <td className="py-4 px-6">{childId}</td>
-                          <td className="py-4 px-6">
-                            {childAcc.isExpanded || !childAcc.children
-                              ? childAcc.current
-                              : childAcc.children_total_current}
-                          </td>
-                          <td className="py-4 px-6">
-                            {childAcc.isExpanded || !childAcc.children
-                              ? childAcc.previous
-                              : childAcc.children_total_previous}
-                          </td>
-                        </tr>
-                        {childAcc.children &&
-                          childAcc.isExpanded &&
-                          Object.keys(childAcc.children).map((grandChildId) => {
-                            const grandChildAcc =
-                              childAcc.children[grandChildId];
-                            return (
-                              <React.Fragment key={grandChildId}>
-                                <tr
-                                  key={grandChildId}
-                                  className={tableSubSubRow}
-                                >
-                                  <td
-                                    className={`py-4 px-6 flex items-center gap-2 ${iconButton}`}
-                                    onClick={() =>
-                                      changeExpanded(grandChildAcc)
-                                    }
-                                  >
-                                    {grandChildAcc.children ? (
-                                      grandChildAcc.isExpanded ? (
-                                        <AiFillMinusCircle />
-                                      ) : (
-                                        <BsPlusCircleFill />
-                                      )
-                                    ) : null}
-                                    <span className="font-medium">
-                                      {grandChildAcc.account_name}
-                                    </span>
-                                  </td>
-                                  
-                                  <td className="py-4 px-6">{grandChildId}</td>
-                                  <td className="py-4 px-6">
-                                    {grandChildAcc.isExpanded ||
-                                    !grandChildAcc.children
-                                      ? grandChildAcc.current
-                                      : grandChildAcc.children_total_current}
-                                  </td>
-                                  <td className="py-4 px-6">
-                                    {grandChildAcc.isExpanded ||
-                                    !grandChildAcc.children
-                                      ? grandChildAcc.previous
-                                      : grandChildAcc.children_total_previous}
-                                  </td>
-                                </tr>
-                                {grandChildAcc.children &&
-                                  grandChildAcc.isExpanded &&
-                                  Object.keys(grandChildAcc.children).map(
-                                    (greatGrandChildId) => {
-                                      const greatGrandChildAcc =
-                                        grandChildAcc.children[
-                                          greatGrandChildId
-                                        ];
-                                      return (
-                                        <tr
-                                          key={greatGrandChildId}
-                                          className={tableSubSubSubRow}
-                                        >
-                                          <td
-                                            className={`py-4 px-6 flex items-center gap-2 ${iconButton}`}
-                                            onClick={() =>
-                                              changeExpanded(greatGrandChildAcc)
-                                            }
-                                          >
-                                            {greatGrandChildAcc.children ? (
-                                              greatGrandChildAcc.isExpanded ? (
-                                                <AiFillMinusCircle />
-                                              ) : (
-                                                <BsPlusCircleFill />
-                                              )
-                                            ) : null}
-                                            <span className="font-medium ">
-                                              {greatGrandChildAcc.account_name}
-                                            </span>
-                                          </td>
-                                          <td className="py-4 px-6">
-                                            {greatGrandChildId}
-                                          </td>
-                                          <td className="py-4 px-6">
-                                            {greatGrandChildAcc.isExpanded ||
-                                            !greatGrandChildAcc.children
-                                              ? greatGrandChildAcc.current
-                                              : greatGrandChildAcc.children_total_current}
-                                          </td>
-                                          <td className="py-4 px-6">
-                                            {greatGrandChildAcc.isExpanded ||
-                                            !greatGrandChildAcc.children
-                                              ? greatGrandChildAcc.previous
-                                              : greatGrandChildAcc.children_total_previous}
-                                          </td>
-                                        </tr>
-                                      );
-                                    }
-                                  )}
-                              </React.Fragment>
-                            );
-                          })}
-                      </React.Fragment>
-                    );
-                  })}
-              </React.Fragment>
-            );
+          
+            rowData["account_code"] = Object.keys(data)[index];
+            return renderRow(rowData, 1);
           })}
         </tbody>
       </table>

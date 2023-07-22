@@ -2,7 +2,6 @@ import React from "react";
 import {
   LineChart,
   ResponsiveContainer,
-  Legend,
   Tooltip,
   Line,
   XAxis,
@@ -19,16 +18,16 @@ const LineChartComponent = ({ chartData }) => {
           <XAxis dataKey="label" interval={"preserveStartEnd"} />
           <YAxis />
           <Tooltip />
-          <Legend />
+
           <Line
             type="linear"
             dataKey="value"
             stroke="url(#line-gradient)"
             strokeWidth={3}
-            dot={{ r: 8 }}
+            dot={{ r: 5 }}
           />
           <defs>
-            <linearGradient id="line-gradient" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="line-gradient" x1="0" y1="0" x2="0" y2="2">
               <stop offset="0%" stopColor="#3B82F6" />
               <stop offset="100%" stopColor="#FFFFFF" />
             </linearGradient>
