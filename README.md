@@ -18,7 +18,7 @@ To run the "Jorden" application locally, follow these steps:
 2. Clone the repository from the GitHub repository:
 
 ```bash
-git clone https://github.com/your-username/jorden.git
+git https://github.com/Noobcoder2042/JordanSky.git
 ```
 
 3. Navigate to the project directory:
@@ -59,4 +59,3 @@ This project is licensed under the MIT License. You can find the full license te
 
 ---
 
-_Replace the placeholders like "your-username" and add screenshots if available. Modify the README to include specific instructions or features based on your actual project implementation. Make sure to update the "Screenshots" section with relevant images of your application._
