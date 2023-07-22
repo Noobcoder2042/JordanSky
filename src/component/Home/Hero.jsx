@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -43,12 +44,16 @@ const Hero = () => {
           components, charts, and other elements here to display data and
           information.
         </p>
-        <button className="bg-[#4a3aff] rounded-lg py-[14px] px-6 font-bodyFont text-white m-5 font-semibold hover:bg-[#311ff4] hover:translate-y-[-1.5px] duration-300 ">
-          BTN1
-        </button>
-        <button className="bg-[#4a3aff] rounded-lg py-[14px] px-6 font-bodyFont text-white m-5 font-semibold hover:bg-[#311ff4] hover:translate-y-[-1.5px] duration-300 ">
-          BTN2
-        </button>
+        <Link to="/table">
+          <button className="bg-[#4a3aff] rounded-lg py-[14px] px-6 font-bodyFont text-white m-5 font-semibold hover:bg-[#311ff4] hover:translate-y-[-1.5px] duration-300 ">
+            Table Page
+          </button>
+        </Link>
+        <Link to="/graph">
+          <button className="bg-[#4a3aff] rounded-lg py-[14px] px-6 font-bodyFont text-white m-5 font-semibold hover:bg-[#311ff4] hover:translate-y-[-1.5px] duration-300 ">
+            BTN2
+          </button>
+        </Link>
       </div>
     </div>
   );
