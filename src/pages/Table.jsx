@@ -48,7 +48,7 @@ const Table = () => {
         : level === 3
         ? tableSubSubRow
         : tableSubSubSubRow;
-    console.log(row);
+
     return (
       <React.Fragment key={account_name}>
         <tr className={rowClass}>
@@ -73,7 +73,6 @@ const Table = () => {
         {children &&
           row.isExpanded &&
           Object.keys(children).map((childId) => {
-            console.log(childId);
             children[childId]["account_code"] = childId;
             return renderRow(children[childId], level + 1);
           })}
@@ -113,9 +112,6 @@ const Table = () => {
         </thead>
         <tbody>
           {Object.values(data).map((rowData, index) => {
-            
-
-          
             rowData["account_code"] = Object.keys(data)[index];
             return renderRow(rowData, 1);
           })}
